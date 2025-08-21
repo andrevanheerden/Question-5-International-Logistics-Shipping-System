@@ -33,7 +33,14 @@ WHERE shipment.id = 31
 
 Join 2: description:
 ```
-code
+SELECT
+    client.fullname AS client_name,
+    client.email AS client_mail,
+    client.contact_number AS client_number,
+    COUNT(item_copy.id) AS items_ordered
+FROM client
+INNER JOIN item_copy ON item_copy.client_id = client.id
+GROUP BY client.id, client.fullname, client.email, client.contact_number;
 ```
 
 Join 3: description:
