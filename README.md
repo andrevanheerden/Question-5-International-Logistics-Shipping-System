@@ -52,9 +52,33 @@ code
 
 ## Stored Procedures
 
-Stored Procedure 1: description:
+Stored Procedure 1: calculete the weight of each shipment
 ```
-code
+DELIMITER $$
+
+CREATE PROCEDURE GetShipmentWeight(IN shipmentId INT)
+BEGIN
+    DECLARE totalWeight DECIMAL(10,2);
+
+    SELECT 
+        SUM(CAST(REPLACE(i.weight, 'kg', '') AS DECIMAL(10))) 
+    INTO totalWeight
+    FROM item_copy ic
+    INNER JOIN item i ON ic.original_item_id = i.id
+    WHERE ic.shipment_id = shipmentId;
+
+    SELECT shipmentId AS Shipment_ID, 
+           IFNULL(totalWeight, 0) AS Total_Weight_KG;
+END$$
+
+DELIMITER ;
+
+```
+Call Stored Procedure 1:
+```
+
+CALL GetShipmentWeight(30);
+
 ```
 
 Stored Procedure 2: description:
