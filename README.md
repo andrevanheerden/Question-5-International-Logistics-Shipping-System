@@ -72,9 +72,22 @@ END$$
 DELIMITER ;
 ```
 
-Trigger 2: description:
+
+Trigger 2: shipment expected date past curret date make entry into trigger that seas "past due date"
 ```
-code
+DELIMITER $$
+CREATE TRIGGER past_due_date
+AFTER INSERT ON shipment
+FOR EACH ROW
+BEGIN
+
+    IF NEW.expected_date < CURDATE() THEN
+        INSERT INTO delays (reason, delay_log_time, new_expected_date, transport_id)
+        VALUES ('Past due date', NOW(), NULL, NEW.transport_id);
+    END IF;
+END$$
+
+DELIMITER ;
 ```
 
 Trigger 3: description:
