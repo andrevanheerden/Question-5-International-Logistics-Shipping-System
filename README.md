@@ -108,7 +108,7 @@ BEGIN
     DECLARE totalWeight DECIMAL(10,2);
 
     SELECT 
-        SUM(CAST(REPLACE(i.weight, 'kg', '') AS DECIMAL(10))) 
+        SUM(CAST(REPLACE(i.weight, 'kg', '') AS DECIMAL(10,2))) 
     INTO totalWeight
     FROM item_copy ic
     INNER JOIN item i ON ic.original_item_id = i.id
