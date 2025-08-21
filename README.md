@@ -19,7 +19,16 @@ create a logistics company that manages shipments between countries. The shipmen
 
 Join 1: description:
 ```
-code
+SELECT
+    shipment.id,
+    COUNT(transport_log.checkpoint_location_id) AS countries_visited,
+    transport_mode.vehicle_type
+FROM transport_log
+INNER JOIN shipment 
+    ON shipment.id = transport_log.shipment_id
+INNER JOIN transport_mode 
+    ON transport_mode.id = shipment.transport_id
+WHERE shipment.id = 31
 ```
 
 Join 2: description:
