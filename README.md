@@ -52,7 +52,24 @@ code
 
 Trigger 1: description:
 ```
-code
+DELIMITER $$
+
+CREATE TRIGGER trg_shipment_arrived
+AFTER UPDATE ON transport_log
+FOR EACH ROW
+BEGIN
+    IF NEW.check_in_time IS NOT NULL 
+       AND OLD.check_in_time IS NULL THEN
+       
+       UPDATE shipment
+       SET arrival_datetime = NEW.check_in_time,
+           clearance_state = 'arrived'
+       WHERE shipment.id = NEW.shipment_id
+         AND shipment.expected_location_id = NEW.checkpoint_location_id;
+    END IF;
+END$$
+
+DELIMITER ;
 ```
 
 Trigger 2: description:
